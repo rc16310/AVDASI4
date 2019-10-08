@@ -1,8 +1,8 @@
-%% Following Civil Jet Aircraft Design, L.R.Jenkinson, pg 129
+%% Following Civil Jet Aircraft Design, L.R.Jenkinson, pg 129 - 132
 %  Tom Gilbert
 %  All SI units
 
-close all; clear all;
+close all; clear all; clc;
 
 %% Constants
 g = 9.81;
@@ -28,7 +28,11 @@ SFC = 0.6;
 flght_vlcty = 230; 
 
 %% Fuel fraction
+% From Civil Jet Aircraft Design, pg 131
 M_FovrM_TO = SFC * (1/LovrD) * ((rnge/flght_vlcty)/60^2);
+
+% Wei's fuel fraction
+M_FovrM_TO = 0.19;
 
 %% Useful mass
 M_UL = pssngr_cpcty * unt_pssngr_mss;
