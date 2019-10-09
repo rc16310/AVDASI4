@@ -32,7 +32,7 @@ flght_vlcty = 230;
 M_FovrM_TO = SFC * (1/LovrD) * ((rnge/flght_vlcty)/60^2);
 
 % Wei's fuel fraction
-M_FovrM_TO = 0.19;
+%M_FovrM_TO = 0.19;
 
 %% Useful mass
 M_UL = pssngr_cpcty * unt_pssngr_mss;
