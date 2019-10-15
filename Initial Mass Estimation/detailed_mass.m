@@ -15,7 +15,7 @@ M_PAY = pssngr_cpcty * unt_pssngr_mss;
 MTOM = 61100;
 NULT = 3.75; % from pg 134
 SREF = 122.6; %http://www.modernairliners.com/airbus-a320-introduction/airbus-a320-specs/
-ARW = [7,8,9,10,11,12]; %http://www.modernairliners.com/airbus-a320-introduction/airbus-a320-specs/
+ARW = [9]; %http://www.modernairliners.com/airbus-a320-introduction/airbus-a320-specs/
 TRW = 0.24; % https://booksite.elsevier.com/9780340741528/appendices/data-a/table-1/table.htm
 TCW = 0.15; % preliminary investigation (Raymer)
 WSWEEP = 25; % http://www.modernairliners.com/airbus-a320-introduction/airbus-a320-specs/
@@ -34,10 +34,10 @@ V_D = 230; % guess - hard to tell what units they want?
 R = M_W + M_F + ((2*M_eng*B_IE)/(0.4*B)) + ((2*M_eng*B_OE)/(0.4*B));
 
 % Wing mass calculation
-%M_W_new = 0.021265 * (MTOM * NULT)^0.4843 * SREF^0.7819 * ARW^0.993 * ...
+M_W_new = 0.021265 * (MTOM * NULT)^0.4843 * SREF^0.7819 * ARW^0.993 * ...
     (1 + TRW)^0.4 * (((1 - (R/MTOM))^0.4) / (WSWEEP * TCW^0.4));
 
-%fprintf("Jenkinson's wing mass is %f kg \n", M_W_new)
+fprintf("Jenkinson's wing mass is %f kg \n", M_W_new)
 
 
 %% Wing group -  Howe - Pg 157 to 158
@@ -93,19 +93,23 @@ M_SC = 0.4 * MTOM^0.684;
 
 fprintf("Surface controls mass is %f kg \n", M_SC)
 
+%% Total propulsion group mass - Jenkinsons - Pg 139
+
+
 %% Total mass - Jenkinson
 M_TOTAL_JENKS = M_W_HOWE + M_B + M_N + M_UC + M_SC + M_PAY;
 fprintf("Total mass for Jenkinson's (adjusted Howe wing) is %f kg \n", M_TOTAL_JENKS)
 
 %% Total mass - Jenkinson
-M_TOTAL_HOWE = M_W_HOWE + M_B_HOWE + M_N + M_UC + M_SC + M_PAY;
+M_TOTAL_HOWE = M_W_HOWE + M_B_HOWE + M_N + M_UC + M_SC; %+ M_PAY;
 fprintf("Total mass for Howe's (using remainder Jenkinson's) is %f kg \n", M_TOTAL_HOWE)
 
-cl = (M_TOTAL_HOWE.*9.81)./((0.5*0.4671*(230^2)*122))
-cd = (cl.^2)./(pi*ARW)
-SFC = 0.6
+%% Plotting
+cl = (M_TOTAL_HOWE.*9.81)./((0.5*0.4671*(230^2)*122));
+cd = (cl.^2)./(pi*ARW);
+SFC = 0.6;
 
-range =  (V_D/9.81) * 1/SFC  * (cl./cd) * log(M_TOTAL_HOWE/(M_TOTAL_HOWE*0.8))
+range =  (V_D/9.81) * 1/SFC  * (cl./cd) * log(M_TOTAL_HOWE/(M_TOTAL_HOWE*0.8));
 
 plot(ARW,range)
 xlabel('AR')
