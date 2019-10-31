@@ -1,0 +1,39 @@
+%function AvailPower
+% Power reduction estimation
+clc;clear all;close all;
+Engine = TP2019Data;
+i = 1;
+data = Engine.Climb;
+P = 4.748e6;
+rho_0 = 1.225;
+for i = 1:length(Engine.Climb)
+    [~,a_i,~,rho_i] = atmosisa(ft2m(data(i,1)));    % Atmospheric data at height
+    out(i,3) = a_i*data(i,2);                       % Flight Speed
+    out(i,4) = data(i,3)*out(i,3)/P;                % Propulsive Power over rated power
+    out(i,5) = rho_i/rho_0;                         % Expected power decrease
+    out(i,6) = P*out(i,4)/42798/data(i,4);          % eta_p*eta_m
+end
+out(:,[1 2]) = data(:,[1 2]);
+
+
+X = 0.2:0.1:0.7;
+Y = 0:5000:30000;
+surface = [ out([1:5],4)'    NaN ;
+              out([6:11],4)'     ;
+              out([12:17],4)'    ;
+            NaN out([18:22],4)'  ;
+            NaN out([23:27],4)'  ;
+            NaN out([28:32],4)'  ;
+            NaN out([33:37],4)'  ];
+        
+etaPoly =[0.03537,0.05957];
+for i = 1:6
+    surface(:,i)/polyval(etaPoly,X
+end
+
+
+surf(X,Y,surface,'FaceColor','interp')
+xlabel('Mach')
+ylabel('Alt')
+save('powersurface.mat','X','Y','surface')
+            
